@@ -1,0 +1,51 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+:root {
+	--COLORblue: rgb(100, 178, 221);
+	--COLORyellow: rgb(249, 196, 10, 1);
+	--COLORorange: rgb(235, 84, 50, 1);
+	--COLORblack: rgb(25, 5, 6, 1);
+}
+html,
+body {
+	min-height: 100vh;
+}
+
+body {
+	background-color: rgb(242, 244, 253);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.quizContainer {
+	background-color: rgb(254, 254, 255);
+	color: rgb(107, 110, 111);
+	border: 2px solid black;
+	width: 60rem;
+	min-height: 70vh;
+	text-align: center;
+	display: flex;
+	flex-direction: column;
+	/* justify-content: space-between; */
+	align-items: center;
+}
+
+.uiInfo {
+	background: linear-gradient(
+		to right,
+		rgb(101, 179, 222),
+		rgb(148, 227, 232)
+	);
+	width: 100%;
+	height: 7rem;
+}
+
+.btn {
+	width: 10rem;
+	height: 2.5rem;
+	border: 2px solid rgb(57, 125, 228);
+}
