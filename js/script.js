@@ -36,6 +36,15 @@ const clearTimer = function () {
 const randomInt = (min, max) =>
   Math.floor(Math.random() * (max - min) + 1) + min;
 
+//helper function to disable clicking
+const dispableClicking = function () {
+  allAnswers.forEach((el) => (el.style.pointerEvents = 'none'));
+};
+//helper function to enable clicking
+const enableClicking = function () {
+  allAnswers.forEach((el) => (el.style.pointerEvents = 'auto'));
+};
+
 //function for clearing unnecessary classlists
 const clearClassNames = function () {
   allAnswers.forEach((el) => {
@@ -88,6 +97,16 @@ const loadQuestions = function (i, questionsArray) {
   answer4.innerHTML = answersArr[3];
 };
 
+// check for game end
+const gameEnd = function () {
+  if (index === 9) {
+    btnNext.disabled = true;
+    dispableClicking();
+    const finalScore = `Your score is: ${correctAnswersNum} / 10, thanks for playing! 😊`;
+    console.log(finalScore);
+  }
+};
+
 // main funtion
 const questionsApi = async function () {
   const promise = await fetch(
@@ -95,11 +114,11 @@ const questionsApi = async function () {
   );
   const result = await promise.json();
   const questionsArray = result.results;
+  console.log(questionsArray);
 
   //loading questions
   loadQuestions(index, questionsArray);
 
-  console.log(allAnswers);
   allAnswers.forEach((el) => {
     el.addEventListener('click', function (e) {
       if (
@@ -108,7 +127,9 @@ const questionsApi = async function () {
         el.classList.add('correctAnswer');
         ++correctAnswersNum;
         displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
+        dispableClicking();
         // game win func
+        gameEnd();
       }
 
       if (
@@ -125,18 +146,27 @@ const questionsApi = async function () {
           )
             el.classList.add('correctAnswer');
         });
+        dispableClicking();
         // game win func
+        gameEnd();
       }
-      console.log(el.lastElementChild.textContent);
     });
   });
 
   btnNext.addEventListener('click', function () {
     clearClassNames();
     index = index + 1;
-    console.log(index);
     loadQuestions(index, questionsArray);
+    enableClicking();
   });
 };
+
+btnReplay.addEventListener('click', function () {
+  clearAll();
+  btnNext.disabled = false;
+  enableClicking();
+
+  questionsApi();
+});
 
 questionsApi();
