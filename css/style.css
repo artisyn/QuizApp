@@ -88,6 +88,7 @@ body {
 .answer {
 	padding: 1rem 2rem;
 	text-align: left;
+	cursor: pointer;
 }
 .uiControl {
 	padding: 1rem 1rem;
@@ -133,8 +134,8 @@ body {
 }
 
 .correctAnswer {
-	background: linear-gradient(to right, rgb(2, 197, 28), rgb(202, 255, 195));
+	background: linear-gradient(to right, rgb(81, 202, 97), rgb(202, 255, 195));
 }
 .wrongAnswer {
-	background: linear-gradient(to right, rgb(247, 14, 14), rgb(245, 189, 185));
+	background: linear-gradient(to right, rgb(243, 93, 93), rgb(245, 189, 185));
 }
