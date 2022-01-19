@@ -15,18 +15,20 @@ body {
 }
 
 body {
-	background-color: rgb(242, 244, 253);
+	background-color: rgb(192, 202, 248);
 	display: flex;
 	justify-content: center;
-	align-items: center;
+	align-items: flex-start;
 }
 
 .quizContainer {
-	background-color: rgb(254, 254, 255);
+	position: relative;
+	background-color: #f4f7fa;
 	color: rgb(107, 110, 111);
-	border: 2px solid black;
+	/* border: 2px solid black; */
 	width: 60rem;
-	min-height: 70vh;
+	min-height: 90vh;
+
 	text-align: center;
 	display: flex;
 	flex-direction: column;
@@ -42,10 +44,90 @@ body {
 	);
 	width: 100%;
 	height: 7rem;
+	font-size: 1.3rem;
+	font-weight: bold;
+	color: white;
+	padding-top: 1.5rem;
+}
+.time {
+	margin-right: 2rem;
+	float: right;
+}
+.correct,
+.wrong {
+	margin-left: 2rem;
+	float: left;
+}
+.uiMain {
+	padding-top: 2rem;
+	/* border: 1px solid red; */
+	background-color: white;
+	width: 70%;
+	min-height: 50vh;
+	max-height: fit-content;
+	z-index: 1;
+	position: absolute;
+	top: 90px;
+}
+.questionNum {
+	font-size: 1.6rem;
+	font-weight: bold;
+}
+.question {
+	font-size: 1.3rem;
+	font-weight: bold;
+}
+.answersContainer {
+	/* border: 1px solid green; */
+	min-height: 10rem;
+	margin-bottom: 1rem;
+}
+.instructions {
+	font-size: 1.2rem;
+}
+.answer {
+	padding: 1rem 2rem;
+	text-align: left;
+}
+.uiControl {
+	padding: 1rem 1rem;
+	min-height: fit-content;
+	/* border: 1px solid yellowgreen; */
+	display: flex;
+	gap: 1rem;
+	justify-content: center;
+	align-items: center;
+	background-color: #f4f7fa;
+}
+.answer {
+	font-size: 1.2rem;
+	border-radius: 1rem;
+	transition: all ease-in 0.2s;
+}
+.indicator {
+	font-size: 1.3rem;
+	font-weight: bold;
 }
 
 .btn {
-	width: 10rem;
-	height: 2.5rem;
+	font-size: 1.1rem;
+	font-weight: bold;
+	width: 12rem;
+	height: 3rem;
 	border: 2px solid rgb(57, 125, 228);
+	border-radius: 1rem;
+	color: white;
+	background-color: var(--COLORblue);
+	transition: all ease-in 0.2s;
+}
+.btn:hover {
+	color: var(--COLORblue);
+	background-color: white;
+}
+.answer:hover {
+	background: linear-gradient(
+		to right,
+		rgb(101, 179, 222),
+		rgb(148, 227, 232)
+	);
 }
