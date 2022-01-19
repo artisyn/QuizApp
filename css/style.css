@@ -131,3 +131,10 @@ body {
 		rgb(148, 227, 232)
 	);
 }
+
+.correctAnswer {
+	background: linear-gradient(to right, rgb(2, 197, 28), rgb(202, 255, 195));
+}
+.wrongAnswer {
+	background: linear-gradient(to right, rgb(247, 14, 14), rgb(245, 189, 185));
+}
