@@ -19,6 +19,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: flex-start;
+	font-family: 'Roboto', sans-serif;
 }
 
 .quizContainer {
@@ -66,8 +67,8 @@ body {
 	min-height: 50vh;
 	max-height: fit-content;
 	z-index: 1;
-	position: absolute;
-	top: 90px;
+	position: relative;
+	top: -30px;
 }
 .questionNum {
 	font-size: 1.6rem;
@@ -99,6 +100,8 @@ body {
 	justify-content: center;
 	align-items: center;
 	background-color: #f4f7fa;
+	position: relative;
+	bottom: -50px;
 }
 .answer {
 	font-size: 1.2rem;
@@ -120,10 +123,12 @@ body {
 	color: white;
 	background-color: var(--COLORblue);
 	transition: all ease-in 0.2s;
+	z-index: 3;
 }
 .btn:hover {
 	color: var(--COLORblue);
 	background-color: white;
+	cursor: pointer;
 }
 .answer:hover {
 	background: linear-gradient(
@@ -138,4 +143,30 @@ body {
 }
 .wrongAnswer {
 	background: linear-gradient(to right, rgb(243, 93, 93), rgb(245, 189, 185));
+}
+.gameResults {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.7rem;
+	font-weight: bold;
+	color: white;
+	width: 100%;
+	height: 95%;
+	position: absolute;
+	z-index: 2;
+	top: 0px;
+	transition: all ease-in 0.2s;
+	background: linear-gradient(
+		to right,
+		rgb(192, 202, 248),
+		rgb(171, 211, 252)
+	);
+	box-shadow: -1px 3px 29px 15px rgb(93 103 217 / 27%);
+	-webkit-box-shadow: -1px 3px 29px 15px rgb(93 103 217 / 27%);
+	-moz-box-shadow: -1px 3px 29px 15px rgb(93 103 217 / 27%);
+}
+
+.displayNone {
+	display: none;
 }

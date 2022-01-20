@@ -8,6 +8,7 @@ const answer1 = document.querySelector('.answer1');
 const answer2 = document.querySelector('.answer2');
 const answer3 = document.querySelector('.answer3');
 const answer4 = document.querySelector('.answer4');
+const displayGameRes = document.querySelector('.gameResults');
 const allAnswers = document.querySelectorAll('.answer');
 const btnReplay = document.querySelector('.btn__replay');
 const btnNext = document.querySelector('.btn__next');
@@ -35,6 +36,14 @@ const clearTimer = function () {
 // helper function for getting randon number;
 const randomInt = (min, max) =>
   Math.floor(Math.random() * (max - min) + 1) + min;
+// decode special symbols in html (for better comparing whith correct answer)
+
+const htmlDecode = function (input) {
+  var e = document.createElement('textarea');
+  e.innerHTML = input;
+  // handle case of empty input
+  return e.childNodes.length === 0 ? '' : e.childNodes[0].nodeValue;
+};
 
 //helper function to disable clicking
 const dispableClicking = function () {
@@ -57,6 +66,8 @@ const clearClassNames = function () {
 };
 
 const clearAll = function () {
+  displayGameRes.innerHTML = '';
+  displayGameRes.classList.add('displayNone');
   index = correctAnswersNum = wrongAnswersNum = 0;
   questionsApi();
   clearTimer();
@@ -102,8 +113,9 @@ const gameEnd = function () {
   if (index === 9) {
     btnNext.disabled = true;
     dispableClicking();
-    const finalScore = `Your score is: ${correctAnswersNum} / 10, thanks for playing! 😊`;
-    console.log(finalScore);
+    const finalScore = `Thank you for playing, your score is: ${correctAnswersNum}/10 🏆!`;
+    displayGameRes.innerHTML = finalScore;
+    displayGameRes.classList.remove('displayNone');
   }
 };
 
@@ -122,7 +134,8 @@ const questionsApi = async function () {
   allAnswers.forEach((el) => {
     el.addEventListener('click', function (e) {
       if (
-        el.lastElementChild.textContent === questionsArray[index].correct_answer
+        htmlDecode(el.lastElementChild.innerHTML) ===
+        htmlDecode(questionsArray[index].correct_answer)
       ) {
         el.classList.add('correctAnswer');
         ++correctAnswersNum;
@@ -133,7 +146,8 @@ const questionsApi = async function () {
       }
 
       if (
-        el.lastElementChild.textContent !== questionsArray[index].correct_answer
+        htmlDecode(el.lastElementChild.innerHTML) !==
+        htmlDecode(questionsArray[index].correct_answer)
       ) {
         el.classList.add('wrongAnswer');
         ++wrongAnswersNum;
@@ -141,8 +155,8 @@ const questionsApi = async function () {
         // find the right answer and show it
         allAnswers.forEach((el) => {
           if (
-            el.lastElementChild.textContent ===
-            questionsArray[index].correct_answer
+            htmlDecode(el.lastElementChild.innerHTML) ===
+            htmlDecode(questionsArray[index].correct_answer)
           )
             el.classList.add('correctAnswer');
         });
