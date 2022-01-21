@@ -81,17 +81,6 @@ const clearAll = function () {
   clearClassNames();
   console.log(correctAnswersNum, wrongAnswersNum, index);
 };
-const clearAllNoTimer = function () {
-  displayGameRes.innerHTML = '';
-  displayGameRes.classList.add('displayNone');
-  index = correctAnswersNum = wrongAnswersNum = 0;
-  displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
-  displayWrong.innerHTML = `❌ ${wrongAnswersNum} wrong`;
-  questionsApi();
-
-  clearClassNames();
-  console.log(correctAnswersNum, wrongAnswersNum, index);
-};
 
 // implementing array shuffling
 const shuffleArray = (array) => {
@@ -112,10 +101,8 @@ const loadQuestions = function (i, questionsArray) {
     questionsArray[i].incorrect_answers[1],
     questionsArray[i].incorrect_answers[2],
   ];
-  console.log(answersArr);
   // shuffling the order of questions
   answersArr = shuffleArray(answersArr); /////////////////////////////////////////////////
-  console.log(answersArr);
   // getting question number
   displayQuestionNum.innerHTML = `Question ${i + 1}/10`;
   // getting question  name
@@ -131,69 +118,77 @@ const loadQuestions = function (i, questionsArray) {
 const gameEnd = function () {
   if (index === 9) {
     btnNext.disabled = true;
+    btnNext.classList.remove('hoverGlow');
+    btnNext.innerHTML = '';
     dispableClicking();
     const finalScore = `Thank you for playing, your score is: ${correctAnswersNum}/10 🏆!`;
     displayGameRes.innerHTML = finalScore;
-    displayGameRes.classList.remove('displayNone');
+    setTimeout(function () {
+      displayGameRes.classList.remove('displayNone');
+    }, 2000);
   }
 };
 
 // main funtion
 const questionsApi = async function () {
-  const promise = await fetch(
-    'https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple'
-  );
-  const result = await promise.json();
-  const questionsArray = result.results;
-  console.log(questionsArray);
+  try {
+    const promise = await fetch(
+      'https://opentdb.com/api.php?amount=10&category=31&difficulty=easy&type=multiple'
+    );
+    const result = await promise.json();
+    const questionsArray = result.results;
+    console.log(questionsArray);
 
-  //loading questions
-  loadQuestions(index, questionsArray);
-
-  allAnswers.forEach((el) => {
-    el.addEventListener('click', function (e) {
-      if (
-        htmlDecode(el.lastElementChild.innerHTML) ===
-        htmlDecode(questionsArray[index].correct_answer)
-      ) {
-        dispableClicking();
-        el.classList.add('correctAnswer');
-        correctAnswersNum = correctAnswersNum + 1;
-        displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
-
-        // game win func
-        gameEnd();
-      }
-
-      if (
-        htmlDecode(el.lastElementChild.innerHTML) !==
-        htmlDecode(questionsArray[index].correct_answer)
-      ) {
-        dispableClicking();
-        el.classList.add('wrongAnswer');
-        wrongAnswersNum = wrongAnswersNum + 1;
-        displayWrong.innerHTML = `❌ ${wrongAnswersNum} wrong`;
-        // find the right answer and show it
-        allAnswers.forEach((el) => {
-          if (
-            htmlDecode(el.lastElementChild.innerHTML) ===
-            htmlDecode(questionsArray[index].correct_answer)
-          )
-            el.classList.add('correctAnswer');
-        });
-
-        // game win func
-        gameEnd();
-      }
-    });
-  });
-
-  btnNext.addEventListener('click', function () {
-    clearClassNames();
-    index = index + 1;
+    //loading questions
     loadQuestions(index, questionsArray);
-    enableClicking();
-  });
+
+    allAnswers.forEach((el) => {
+      el.addEventListener('click', function (e) {
+        if (
+          htmlDecode(el.lastElementChild.innerHTML) ===
+          htmlDecode(questionsArray[index].correct_answer)
+        ) {
+          dispableClicking();
+          el.classList.add('correctAnswer');
+          correctAnswersNum = correctAnswersNum + 1;
+          displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
+
+          // game win func
+          gameEnd();
+        }
+
+        if (
+          htmlDecode(el.lastElementChild.innerHTML) !==
+          htmlDecode(questionsArray[index].correct_answer)
+        ) {
+          dispableClicking();
+          el.classList.add('wrongAnswer');
+          wrongAnswersNum = wrongAnswersNum + 1;
+          displayWrong.innerHTML = `❌ ${wrongAnswersNum} wrong`;
+          // find the right answer and show it
+          allAnswers.forEach((el) => {
+            if (
+              htmlDecode(el.lastElementChild.innerHTML) ===
+              htmlDecode(questionsArray[index].correct_answer)
+            )
+              el.classList.add('correctAnswer');
+          });
+
+          // game win func
+          gameEnd();
+        }
+      });
+    });
+
+    btnNext.addEventListener('click', function () {
+      clearClassNames();
+      index = index + 1;
+      loadQuestions(index, questionsArray);
+      enableClicking();
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 btnReplay.addEventListener('click', function () {

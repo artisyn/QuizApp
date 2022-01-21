@@ -5,9 +5,6 @@
 }
 :root {
 	--COLORblue: rgb(100, 178, 221);
-	--COLORyellow: rgb(249, 196, 10, 1);
-	--COLORorange: rgb(235, 84, 50, 1);
-	--COLORblack: rgb(25, 5, 6, 1);
 }
 html,
 body {
@@ -132,23 +129,31 @@ body {
 	cursor: pointer;
 } */
 .hoverGlow:hover {
-	color: var(--COLORblue);
+	color: (--COLORblue);
 	background-color: white;
 	cursor: pointer;
 }
 .answer:hover {
 	background: linear-gradient(
 		to right,
-		rgb(101, 179, 222),
-		rgb(148, 227, 232)
+		rgb(101, 179, 222, 0.7),
+		rgb(148, 227, 232, 0.7)
 	);
 }
 
 .correctAnswer {
-	background: linear-gradient(to right, rgb(81, 202, 97), rgb(202, 255, 195));
+	background: linear-gradient(
+		to right,
+		rgb(81, 202, 97, 0.7),
+		rgb(202, 255, 195, 0.7)
+	);
 }
 .wrongAnswer {
-	background: linear-gradient(to right, rgb(243, 93, 93), rgb(245, 189, 185));
+	background: linear-gradient(
+		to right,
+		rgb(243, 93, 93, 0.7),
+		rgb(245, 189, 185, 0.7)
+	);
 }
 .gameResults {
 	display: flex;
