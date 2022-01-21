@@ -19,19 +19,24 @@ let wrongAnswersNum = 0;
 let timer;
 let sec = 0;
 // functions
+const startTimer = () => {
+  timer = setInterval(function () {
+    displayTime.innerHTML =
+      `⏰ ` +
+      `${parseInt(sec / 60, 10)}`.padStart(2, 0) +
+      `:` +
+      `${++sec % 60}`.padStart(2, 0);
+    return timer;
+  }, 1000);
+};
 
 //starting timer
-timer = setInterval(function () {
-  displayTime.innerHTML =
-    `⏰ ` +
-    `${parseInt(sec / 60, 10)}`.padStart(2, 0) +
-    `:` +
-    `${++sec % 60}`.padStart(2, 0);
-}, 1000);
+startTimer();
 // clearing timer
 const clearTimer = function () {
   clearInterval(timer);
   sec = 0;
+  displayTime.innerHTML = '⏰ 00:00';
 };
 // helper function for getting randon number;
 const randomInt = (min, max) =>
@@ -69,22 +74,34 @@ const clearAll = function () {
   displayGameRes.innerHTML = '';
   displayGameRes.classList.add('displayNone');
   index = correctAnswersNum = wrongAnswersNum = 0;
+  displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
+  displayWrong.innerHTML = `❌ ${wrongAnswersNum} wrong`;
   questionsApi();
   clearTimer();
   clearClassNames();
+  console.log(correctAnswersNum, wrongAnswersNum, index);
+};
+const clearAllNoTimer = function () {
+  displayGameRes.innerHTML = '';
+  displayGameRes.classList.add('displayNone');
+  index = correctAnswersNum = wrongAnswersNum = 0;
+  displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
+  displayWrong.innerHTML = `❌ ${wrongAnswersNum} wrong`;
+  questionsApi();
+
+  clearClassNames();
+  console.log(correctAnswersNum, wrongAnswersNum, index);
 };
 
 // implementing array shuffling
-const shuffleArray = function (arr) {
-  const copyArr = [...arr];
-  let shuffledArr = [];
-  while (copyArr.length - 1 > 0) {
-    let randNum = randomInt(0, copyArr.length - 1);
-    shuffledArr.push(copyArr[randNum]);
-    copyArr.splice(randNum, 1);
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
   }
-  shuffledArr.push(copyArr[0]);
-  return shuffledArr;
+  return array;
 };
 
 //loading questions for user
@@ -95,8 +112,10 @@ const loadQuestions = function (i, questionsArray) {
     questionsArray[i].incorrect_answers[1],
     questionsArray[i].incorrect_answers[2],
   ];
+  console.log(answersArr);
   // shuffling the order of questions
-  answersArr = shuffleArray(answersArr);
+  answersArr = shuffleArray(answersArr); /////////////////////////////////////////////////
+  console.log(answersArr);
   // getting question number
   displayQuestionNum.innerHTML = `Question ${i + 1}/10`;
   // getting question  name
@@ -137,10 +156,11 @@ const questionsApi = async function () {
         htmlDecode(el.lastElementChild.innerHTML) ===
         htmlDecode(questionsArray[index].correct_answer)
       ) {
-        el.classList.add('correctAnswer');
-        ++correctAnswersNum;
-        displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
         dispableClicking();
+        el.classList.add('correctAnswer');
+        correctAnswersNum = correctAnswersNum + 1;
+        displayCorrect.innerHTML = `✔ ${correctAnswersNum} correct`;
+
         // game win func
         gameEnd();
       }
@@ -149,8 +169,9 @@ const questionsApi = async function () {
         htmlDecode(el.lastElementChild.innerHTML) !==
         htmlDecode(questionsArray[index].correct_answer)
       ) {
+        dispableClicking();
         el.classList.add('wrongAnswer');
-        ++wrongAnswersNum;
+        wrongAnswersNum = wrongAnswersNum + 1;
         displayWrong.innerHTML = `❌ ${wrongAnswersNum} wrong`;
         // find the right answer and show it
         allAnswers.forEach((el) => {
@@ -160,7 +181,7 @@ const questionsApi = async function () {
           )
             el.classList.add('correctAnswer');
         });
-        dispableClicking();
+
         // game win func
         gameEnd();
       }
@@ -176,11 +197,13 @@ const questionsApi = async function () {
 };
 
 btnReplay.addEventListener('click', function () {
-  clearAll();
-  btnNext.disabled = false;
-  enableClicking();
-
-  questionsApi();
+  location.reload();
+  // doesn't work(stacks async functions)
+  // clearAll();
+  // btnNext.disabled = false;
+  // enableClicking();
+  // startTimer();
+  // questionsApi();
 });
 
 questionsApi();

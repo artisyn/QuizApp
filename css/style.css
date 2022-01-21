@@ -125,7 +125,13 @@ body {
 	transition: all ease-in 0.2s;
 	z-index: 3;
 }
-.btn:hover {
+
+/* .btn:hover {
+	color: var(--COLORblue);
+	background-color: white;
+	cursor: pointer;
+} */
+.hoverGlow:hover {
 	color: var(--COLORblue);
 	background-color: white;
 	cursor: pointer;
